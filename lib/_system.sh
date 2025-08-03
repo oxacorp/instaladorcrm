@@ -34,12 +34,14 @@ system_git_clone() {
 
   sleep 2
 
-  # Crear la carpeta donde se clonará, si no existe
-  sudo mkdir -p /home/deploy/${instancia_add}
-  sudo chown deploy:deploy /home/deploy/${instancia_add}
+  # Asegura que el directorio existe y pertenece a deploy
+  mkdir -p /home/deploy/${instancia_add}
+  chown -R deploy:deploy /home/deploy
 
-  # Clonar el repositorio directamente dentro de la carpeta esperada
-  sudo -u deploy git clone "${link_git}" "/home/deploy/${instancia_add}"
+  # Clona como deploy
+  sudo su - deploy <<EOF
+  git clone ${link_git} /home/deploy/${instancia_add}/
+EOF
 
   sleep 2
 }
