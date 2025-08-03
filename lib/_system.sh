@@ -32,12 +32,14 @@ system_git_clone() {
   printf "${WHITE} 💻 Fazendo download do código Atendechat...${GRAY_LIGHT}"
   printf "\n\n"
 
-
   sleep 2
 
-  sudo su - deploy <<EOF
-  git clone ${link_git} /home/deploy/${instancia_add}/
-EOF
+  # Crear la carpeta donde se clonará, si no existe
+  sudo mkdir -p /home/deploy/${instancia_add}
+  sudo chown deploy:deploy /home/deploy/${instancia_add}
+
+  # Clonar el repositorio directamente dentro de la carpeta esperada
+  sudo -u deploy git clone "${link_git}" "/home/deploy/${instancia_add}"
 
   sleep 2
 }
